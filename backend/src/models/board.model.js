@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const workspaceSchema = new mongoose.Schema({
+const boardSchema = new mongoose.Schema({
   _id: {
     type: String,
     // _id: false,
@@ -28,10 +28,6 @@ const workspaceSchema = new mongoose.Schema({
     type: String,
     ref: 'User',
   }],
-  boards: [{
-    type: String,
-    ref: 'Board',
-  }],
 });
 
-module.exports = mongoose.model('Workspace', workspaceSchema);
+module.exports = mongoose.model('Board', boardSchema);

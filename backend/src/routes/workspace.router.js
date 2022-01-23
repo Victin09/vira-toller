@@ -16,13 +16,14 @@ const workspaceRouter = async (fastify) => {
   });
   // List all workspaces
   fastify.get('/', validator.endpointWorkspaceValidator, async (_request, reply) => {
-    const workspaces = await workspaceSchema.find().populate('users', '-password');
+    const workspaces = await workspaceSchema.find().populate('users', '-password').populate('boards');
     reply.code(200).send(workspaces);
   });
   // Get a workspace by id
   fastify.get('/:id', validator.queryWorkspaceValidator, async (request, reply) => {
     const { id } = request.params;
-    const workspace = await workspaceSchema.findById(id).populate('users', '-password');
+    const workspace = await workspaceSchema.findById(id).populate('users', '-password')
+      .populate('boards');
     reply.code(200).send(workspace);
   });
   // Get a workspace by user id

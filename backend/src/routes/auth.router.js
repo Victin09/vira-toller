@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { v4: uuid } = require('uuid');
 
 const User = require('../models/user.model');
+const workspaceSchema = require('../models/workspace.model');
 const validator = require('../lib/validators/auth.validator');
 
 const authRouter = async (fastify) => {
@@ -19,7 +20,7 @@ const authRouter = async (fastify) => {
     const token = fastify.jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'vira-toller');
     reply.code(200).send({ token });
   });
-  // Create a user
+  // Create a use
   fastify.post('/signup', validator.signUpValidator, async (request, reply) => {
     const {
       email, username, password, firstName, lastName,
@@ -37,6 +38,12 @@ const authRouter = async (fastify) => {
       lastName,
     });
     await newUser.save();
+    await workspaceSchema.create({
+      _id: uuid(),
+      name: `${firstName}'s workspace`,
+      description: 'This is your workspace',
+      users: [newUser._id],
+    });
     reply.code(201).send({ message: 'User created successfully' });
   });
 };
