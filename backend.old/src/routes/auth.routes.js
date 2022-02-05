@@ -1,25 +1,13 @@
-const bcrypt = require('bcrypt');
 const { v4: uuid } = require('uuid');
 
+// const {authService} = require('../services/auth.service')(fastify);
 const User = require('../models/user.model');
 const workspaceSchema = require('../models/workspace.model');
-const validator = require('../lib/validators/auth.validator');
+const validator = require('../middlewares/validators/auth.validator');
 
 const authRouter = async (fastify) => {
   // Login
-  fastify.post('/signin', validator.signInValidator, async (request, reply) => {
-    const { email, password } = request.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      reply.code(401).send({ message: 'Invalid email or password' });
-    }
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      reply.code(401).send({ message: 'Invalid email or password' });
-    }
-    const token = fastify.jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'vira-toller');
-    reply.code(200).send({ token });
-  });
+  fastify.post('/signin', validator.signInValidator, require('../services/auth.service')(fastify).signin);
   // Create a use
   fastify.post('/signup', validator.signUpValidator, async (request, reply) => {
     const {

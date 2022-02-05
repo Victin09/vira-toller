@@ -15,20 +15,21 @@ const fastify = require('fastify')({
   },
 });
 // Load app modules
-const databaseConnection = require('./lib/database/database-connector.lib');
-const swaggerConfig = require('./lib/documentation/swagger.lib');
+const databaseConnection = require('./config/database/database-connector.config');
+const swaggerConfig = require('./config/swagger.config');
 
 // Register plugins
 fastify.register(jwt, {
   secret: process.env.JWT_SECRET,
 });
 fastify.register(oas, swaggerConfig);
-fastify.register(autoload, {
-  dir: path.join(__dirname, 'routes'),
-  options: {
-    prefix: '/api/v1',
-  },
-});
+// fastify.register(autoload, {
+//   dir: path.join(__dirname, 'routes'),
+//   options: {
+//     prefix: '/api/v1',
+//   },
+// });
+fastify.register(require('./routes/auth.routes'), { prefix: '/api/v1' });
 
 fastify.register(databaseConnection, {
   host: process.env.DATABASE_HOST || 'localhost',
