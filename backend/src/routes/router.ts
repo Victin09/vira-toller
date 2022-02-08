@@ -3,6 +3,7 @@ import passport from 'passport';
 
 import auth from './auth.routes';
 import user from './user.routes';
+import workspace from './workspace.routes';
 
 // Router
 const router: Router = Router();
@@ -17,5 +18,6 @@ router.get('/', passport.authenticate('jwt', { session: false }), (_req: Request
 
 router.use('/auth', auth);
 router.use('/users', user);
+router.use('/workspaces', workspace);
 
 export default router;

@@ -10,6 +10,7 @@ export interface IUser extends Document {
   _id: string;
   name: Name;
   email: string;
+  username: string;
   password: string;
   matchPassword: (password: string) => boolean;
 }
