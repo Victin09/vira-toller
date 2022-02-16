@@ -34,7 +34,7 @@ export const findUserById = async (req: Request, res: Response) => {
       message: 'Error getting user',
     });
   }
-}
+};
 
 // Find user by email
 export const findUserByEmail = async (req: Request, res: Response) => {
@@ -51,7 +51,7 @@ export const findUserByEmail = async (req: Request, res: Response) => {
       message: 'Error getting user',
     });
   }
-}
+};
 
 // Find user by username
 export const findUserByUsername = async (req: Request, res: Response) => {
@@ -68,7 +68,7 @@ export const findUserByUsername = async (req: Request, res: Response) => {
       message: 'Error getting user',
     });
   }
-}
+};
 
 // Find user by id and update
 export const updateUserById = async (req: Request, res: Response) => {
@@ -85,7 +85,7 @@ export const updateUserById = async (req: Request, res: Response) => {
       message: 'Error updating user',
     });
   }
-}
+};
 
 // Find user by id and delete
 export const deleteUserById = async (req: Request, res: Response) => {
@@ -101,4 +101,4 @@ export const deleteUserById = async (req: Request, res: Response) => {
       message: 'Error deleting user',
     });
   }
-}
+};
