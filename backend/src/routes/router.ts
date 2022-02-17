@@ -5,6 +5,8 @@ import auth from './auth.routes';
 import user from './user.routes';
 import workspace from './workspace.routes';
 import board from './board.routes';
+import list from './list.routes';
+import card from './card.routes';
 
 // Router
 const router: Router = Router();
@@ -21,5 +23,7 @@ router.use('/auth', auth);
 router.use('/users', user);
 router.use('/workspaces', workspace);
 router.use('/boards', board);
+router.use('/lists', list);
+router.use('/cards', card);
 
 export default router;
