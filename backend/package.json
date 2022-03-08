@@ -1,9 +1,9 @@
 {
-  "name": "express-mongo-passport-jwt-rest-api-boilerplate",
+  "name": "vira-toller",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/t4h4r/express-mongo-passport-jwt-rest-api-boilerplate",
-  "author": "Tahar Codes <taharcodes@gmail.com>",
+  "main": "index.ts",
+  "repository": "https://github.com/Victin09/vira-toller",
+  "author": "Victor Gomez",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --config nodemon.config.json src/index.ts",

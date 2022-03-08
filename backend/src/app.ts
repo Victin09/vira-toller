@@ -2,7 +2,10 @@ import express, { Express, Request, Response, json, urlencoded } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import https from 'https';
+import fs from 'fs';
 
+import logger from './config/logger.config';
 import passport from './config/passport.config';
 import runDatabase from './config/db.config';
 import router from './routes/router';
@@ -32,6 +35,30 @@ app.get('/', passport.authenticate('jwt', { session: false }), (_req: Request, r
 
 app.use('/api/v1', router);
 
-runDatabase();
+const privateKey: string = fs.readFileSync('SSL/server.key', 'utf8');
+const certificate: string = fs.readFileSync('SSL/server.crt', 'utf8');
 
-export default app;
+// App
+const port: number | string = process.env.PORT || 5000;
+
+// Server
+const credentials: https.ServerOptions = { key: privateKey, cert: certificate };
+const HTTPS = https.createServer(credentials, app);
+const httpsDev = Boolean(process.env.HTTPS_DEV);
+
+let server: Express | https.Server;
+process.env.NODE_ENV === 'production' ? (server = app) : httpsDev ? (server = HTTPS) : (server = app);
+
+const runServer = (): void => {
+  server.listen(port, async () => {
+    try {
+      await runDatabase();
+      logger.info(`${httpsDev ? `SSL dev server` : `Web server`} listening on port ${port}`);
+    } catch (err) {
+      logger.error('Error to connect server ', err);
+      process.exit(1);
+    }
+  });
+};
+
+export default runServer;
