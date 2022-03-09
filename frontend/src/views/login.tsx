@@ -1,5 +1,5 @@
 import { useForm } from '../common/hooks/form'
-// import { IResponse } from '../common/interfaces/http.interface'
+import { IResponse } from '../common/interfaces/http.interface'
 
 interface ILoginProps {
   email: string
@@ -12,15 +12,14 @@ const Login = () => {
   const sendForm = async (): Promise<void> => {
     console.log('values from form hook', values)
     console.log('errors from form hook', errors)
-    // console.log({ email, password })
-    // const result: IResponse = await (
-    //   await fetch('http://localhost:3001/api/v1/auth/signin', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email, password }),
-    //   })
-    // ).json()
-    // if (!result.success) setError(true)
+    const result: IResponse = await (
+      await fetch('http://localhost:3001/api/v1/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      })
+    ).json()
+    console.log('result', result);
   }
 
   return (
