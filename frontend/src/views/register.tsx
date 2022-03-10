@@ -1,13 +1,28 @@
-import { useState } from 'react'
+import { useForm } from '../common/hooks/form'
+import { IResponse } from '../common/interfaces/http.interface'
+
+interface IRegisterForm {
+  email: string
+  fullName: string
+  password: string
+  confirmPassword: string
+}
 
 const Register = () => {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmpassword, setConfirmPassword] = useState('')
+  const { values, errors, register, handleSubmit } = useForm<IRegisterForm>()
 
-  const sendForm = () => {
-    console.log(email, name, password, confirmpassword)
+  const sendForm = async (): Promise<void> => {
+    console.log('values from form hook', values)
+    console.log('errors from form hook', errors)
+    const { email, fullName, password } = values;
+    const result: IResponse = await (
+      await fetch('http://localhost:3001/api/v1/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, fullName, password }),
+      })
+    ).json()
+    console.log('result', result);
   }
 
   return (
@@ -17,38 +32,50 @@ const Register = () => {
           <h2 className="card-title font-size-18 m-0 text-center pt-10">
             Crear una nueva cuenta
           </h2>
-          <form className="content">
+          <form className="content" onSubmit={handleSubmit(sendForm)} noValidate>
             <div className="form-group">
-              <label htmlFor="username" className="required">
+              <label htmlFor="email" className="required">
                 Correo electrónico
               </label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
-                id="username"
-                placeholder="Username"
-                required
-                onChange={(e) => setEmail(e.target.value)}
+                id="email"
+                placeholder="example@example.com"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "El correo electrónico es requerido"
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "El correo electrónico no es válido"
+                  }
+                })}
               />
-              {/* <div className="form-text">
-                Only alphanumeric characters and underscores allowed.
-              </div> */}
+             {errors.email && (
+                <div className="invalid-feedback">{errors.email}</div>
+              )}
             </div>
             <div className="form-group">
-              <label htmlFor="firstname" className="required">
+              <label htmlFor="fullName" className="required">
                 Nombre
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="firstname"
-                placeholder="firstname"
-                required
-                onChange={(e) => setName(e.target.value)}
+                id="fullName"
+                placeholder="John Doe"
+                {...register("fullName", {
+                  required: {
+                    value: true,
+                    message: "El nombre es requerido"
+                  }
+                })}
               />
-              {/* <div className="form-text">
-                Only alphanumeric characters and underscores allowed.
-              </div> */}
+              {errors.fullName && (
+                <div className="invalid-feedback">{errors.fullName}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="password" className="required">
@@ -60,35 +87,49 @@ const Register = () => {
                 id="password"
                 placeholder="Password"
                 required
-                onChange={(e) => setPassword(e.target.value)}
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "La contraseña es requerida"
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "La contraseña debe tener al menos 8 caracteres"
+                  }
+                })}
               />
-              {/* <div className="form-text">
-                Must be at least 8 characters long, and contain at least one
-                special character.
-              </div> */}
+              {errors.password && (
+                <div className="invalid-feedback">{errors.password}</div>
+              )}
             </div>
             <div className="form-group">
-              <label htmlFor="confirmpassword" className="required">
+              <label htmlFor="confirmPassword" className="required">
                 Confirmar contraseña
               </label>
               <input
                 type="password"
                 className="form-control"
-                id="confirmpassword"
+                id="confirmPassword"
                 placeholder="Password"
-                required
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                {...register("confirmPassword", {
+                  required: {
+                    value: true,
+                    message: "La contraseña es requerida"
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "La contraseña debe tener al menos 8 caracteres"
+                  }
+                })}
               />
-              {/* <div className="form-text">
-                Must be at least 8 characters long, and contain at least one
-                special character.
-              </div> */}
+              {errors.confirmPassword && (
+                <div className="invalid-feedback">{errors.confirmPassword}</div>
+              )}
             </div>
             <input
               className="btn btn-primary btn-block"
               value="Crear cuenta"
-              readOnly
-              onClick={() => sendForm()}
+              type="submit"
             />
           </form>
         </div>
