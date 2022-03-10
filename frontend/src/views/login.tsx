@@ -1,6 +1,8 @@
-import { useFetch } from '../common/hooks/fetch'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from '../common/hooks/form'
-import { IResponse } from '../common/interfaces/http.interface'
+import { Response } from '../common/types/fetch.type'
+import { SignIn } from '../models/auth.model'
 
 interface ILoginProps {
   email: string
@@ -8,29 +10,31 @@ interface ILoginProps {
 }
 
 const Login = () => {
+  const navigate = useNavigate()
   const { values, errors, register, handleSubmit } = useForm<ILoginProps>()
-  const { data, error } = useFetch<IResponse>(
-    'http://localhost:3001/api/v1/auth/signin',
-    {
-      method: 'POST',
-      body: JSON.stringify({ email: values.email, password: values.password })
-    }
-  )
+  const [error, setError] = useState('')
 
   const sendForm = async (): Promise<void> => {
     console.log('values from form hook', values)
     console.log('errors from form hook', errors)
-    console.log('data from fetch hook', data)
-    console.log('error from fetch hook', error)
-    // console.log({ email, password })
-    // const result: IResponse = await (
-    //   await fetch('http://localhost:3001/api/v1/auth/signin', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email, password }),
-    //   })
-    // ).json()
-    // if (!result.success) setError(true)
+    const { email, password } = values
+    const result: Response<SignIn> = await (
+      await fetch('http://localhost:3001/api/v1/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
+      })
+    ).json()
+    if (result.success) {
+      navigate('/')
+    } else {
+      setError(
+        result.message === 'Invalid credentials'
+          ? 'Email or password is incorrect'
+          : 'Something went wrong'
+      )
+    }
   }
 
   return (
@@ -40,6 +44,7 @@ const Login = () => {
           <h2 className="card-title font-size-18 m-0 text-center pt-10">
             Iniciar sesión
           </h2>
+          {error && <span className="invalid-feedback">{error}</span>}
           <div className="content">
             <form onSubmit={handleSubmit(sendForm)} noValidate>
               <div className="form-group">

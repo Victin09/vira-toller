@@ -21,10 +21,11 @@ export const useForm = <T extends Record<keyof T, any> = {}>(): IForm<T> => {
       // if the minLength rule is present
       if (validation.minLength) {
         // if the value is less than the minLength
-        if (value.length < validation.minLength) {
+        if (value.length < validation.minLength.value) {
+          console.log('MINLENGTH')
           return (
             validation.minLength.message ||
-            `This field must be at least ${validation.minLength} characters`
+            `This field must be at least ${validation.minLength.value} characters`
           )
         }
       }
@@ -32,10 +33,10 @@ export const useForm = <T extends Record<keyof T, any> = {}>(): IForm<T> => {
       // if the maxLength rule is present
       if (validation.maxLength) {
         // if the value is greater than the maxLength
-        if (value.length > validation.maxLength) {
+        if (value.length > validation.maxLength.value) {
           return (
             validation.maxLength.message ||
-            `This field must be less than ${validation.maxLength} characters`
+            `This field must be less than ${validation.maxLength.value} characters`
           )
         }
       }

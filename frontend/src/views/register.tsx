@@ -1,38 +1,50 @@
+/* eslint-disable multiline-ternary */
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from '../common/hooks/form'
-import { IResponse } from '../common/interfaces/http.interface'
-
-interface IRegisterForm {
-  email: string
-  fullName: string
-  password: string
-  confirmPassword: string
-}
+import { Response } from '../common/types/fetch.type'
+import { SignUp } from '../models/auth.model'
 
 const Register = () => {
-  const { values, errors, register, handleSubmit } = useForm<IRegisterForm>()
+  const navigate = useNavigate()
+  const { values, errors, register, handleSubmit } = useForm<SignUp>()
+  const [error, setError] = useState('')
 
   const sendForm = async (): Promise<void> => {
     console.log('values from form hook', values)
     console.log('errors from form hook', errors)
-    const { email, fullName, password } = values;
-    const result: IResponse = await (
-      await fetch('http://localhost:3001/api/v1/auth/signin', {
+    const { email, fullname, password } = values
+    const result: Response<SignUp> = await (
+      await fetch('http://localhost:3001/api/v1/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullName, password }),
+        body: JSON.stringify({ email, fullname, password })
       })
     ).json()
-    console.log('result', result);
+    if (result.success) {
+      navigate('/')
+    } else {
+      setError(
+        result.message === 'Email already exists'
+          ? 'Email already exists'
+          : 'Something went wrong'
+      )
+    }
   }
 
   return (
     <div className="h-full d-flex justify-content-center align-items-center">
       <div className="w-400 mw-full">
-        <div className="card shadow-lg border-transparent p-0">
+        <div className="card shadow-lg border-transparent overflow-auto p-0">
           <h2 className="card-title font-size-18 m-0 text-center pt-10">
             Crear una nueva cuenta
           </h2>
-          <form className="content" onSubmit={handleSubmit(sendForm)} noValidate>
+          {error && <span className="invalid-feedback">{error}</span>}
+          <form
+            className="content"
+            onSubmit={handleSubmit(sendForm)}
+            noValidate
+          >
             <div className="form-group">
               <label htmlFor="email" className="required">
                 Correo electrónico
@@ -42,18 +54,18 @@ const Register = () => {
                 className="form-control"
                 id="email"
                 placeholder="example@example.com"
-                {...register("email", {
+                {...register('email', {
                   required: {
                     value: true,
-                    message: "El correo electrónico es requerido"
+                    message: 'El correo electrónico es requerido'
                   },
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                    message: "El correo electrónico no es válido"
+                    message: 'El correo electrónico no es válido'
                   }
                 })}
               />
-             {errors.email && (
+              {errors.email && (
                 <div className="invalid-feedback">{errors.email}</div>
               )}
             </div>
@@ -66,15 +78,15 @@ const Register = () => {
                 className="form-control"
                 id="fullName"
                 placeholder="John Doe"
-                {...register("fullName", {
+                {...register('fullname', {
                   required: {
                     value: true,
-                    message: "El nombre es requerido"
+                    message: 'El nombre es requerido'
                   }
                 })}
               />
-              {errors.fullName && (
-                <div className="invalid-feedback">{errors.fullName}</div>
+              {errors.fullname && (
+                <div className="invalid-feedback">{errors.fullname}</div>
               )}
             </div>
             <div className="form-group">
@@ -87,14 +99,14 @@ const Register = () => {
                 id="password"
                 placeholder="Password"
                 required
-                {...register("password", {
+                {...register('password', {
                   required: {
                     value: true,
-                    message: "La contraseña es requerida"
+                    message: 'La contraseña es requerida'
                   },
                   minLength: {
                     value: 8,
-                    message: "La contraseña debe tener al menos 8 caracteres"
+                    message: 'La contraseña debe tener al menos 8 caracteres'
                   }
                 })}
               />
@@ -111,14 +123,14 @@ const Register = () => {
                 className="form-control"
                 id="confirmPassword"
                 placeholder="Password"
-                {...register("confirmPassword", {
+                {...register('confirmPassword', {
                   required: {
                     value: true,
-                    message: "La contraseña es requerida"
+                    message: 'La contraseña es requerida'
                   },
                   minLength: {
                     value: 8,
-                    message: "La contraseña debe tener al menos 8 caracteres"
+                    message: 'La contraseña debe tener al menos 8 caracteres'
                   }
                 })}
               />

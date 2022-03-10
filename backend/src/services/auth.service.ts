@@ -5,28 +5,47 @@ import { v4 as uuid } from 'uuid';
 import User, { IUser } from '../models/user.model';
 
 export const signup = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
   try {
-    const user = await User.create({
+    // check if email exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email already exists',
+      });
+    }
+    user = await User.create({
       _id: uuid(),
-      name: {
-        firstName,
-        lastName,
-      },
+      fullname,
       email,
       password,
+      active: true,
     });
 
-    res.status(200).json({
+    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_SECRET as string, {
+      expiresIn: process.env.JWT_TOKEN_EXPIRE,
+    });
+    const jwtCookieExpire = Number(process.env.JWT_COOKIE_EXPIRE);
+    const httpsDev = Boolean(process.env.HTTPS_DEV);
+    const options = {
+      expires: new Date(Date.now() + jwtCookieExpire * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: httpsDev,
+    };
+  
+    if (process.env.NODE_ENV === 'production') {
+      options.secure = true;
+    }
+  
+    return res.status(200).cookie('_token', token, options).json({
       success: true,
-      message: 'Account created successfully',
-      data: {
-        user: user,
-      },
+      message: 'Account login successfully',
+      data: { user },
     });
   } catch (err: unknown) {
-    res.status(200).json({
+    res.status(500).json({
       success: false,
       message: 'Account creation error',
       data: err,
@@ -97,7 +116,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     });
   }
 
-  const user = await User.findOne({ 'email.value': email });
+  const user = await User.findOne({ 'email': email });
 
   if (!user) {
     return res.status(200).json({
