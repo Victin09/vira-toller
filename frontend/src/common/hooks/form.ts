@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
+import { IForm, IRegisterField } from '../interfaces/form.interface'
 
-import { Validation, Error } from '../interfaces/form.interface'
+import { Error, Validation } from '../types/form.type'
 
-export const useForm = <T extends Record<keyof T, any> = {}>() => {
+export const useForm = <T extends Record<keyof T, any> = {}>(): IForm<T> => {
   const [values, setValues] = useState<T>({} as T)
   const [errors, setErrors] = useState<Error<T>>({} as T)
 
-  const validateField = (value: any, validation?: Validation) => {
+  const validateField = (value: any, validation?: Validation): string => {
     // check if the rules exist since a field can not have validations
     if (validation) {
       // if the required rule is present
@@ -52,7 +53,10 @@ export const useForm = <T extends Record<keyof T, any> = {}>() => {
     return ''
   }
 
-  const register = (name: keyof T, validation?: Validation) => {
+  const register = (
+    name: keyof T,
+    validation?: Validation
+  ): IRegisterField<T> => {
     return {
       // set the initial value
       value: values[name] || '',
@@ -75,13 +79,14 @@ export const useForm = <T extends Record<keyof T, any> = {}>() => {
 
   // handle form submission
   const handleSubmit =
-    (callback: any) => (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      const error = Object.values(errors).find((err) => err)
-      if (!error) {
-        callback()
+    (callback: any) =>
+      (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+        const error = Object.values(errors).find((err) => err)
+        if (!error) {
+          callback()
+        }
       }
-    }
 
   return {
     values,

@@ -1,5 +1,6 @@
+import { useFetch } from '../common/hooks/fetch'
 import { useForm } from '../common/hooks/form'
-// import { IResponse } from '../common/interfaces/http.interface'
+import { IResponse } from '../common/interfaces/http.interface'
 
 interface ILoginProps {
   email: string
@@ -8,10 +9,19 @@ interface ILoginProps {
 
 const Login = () => {
   const { values, errors, register, handleSubmit } = useForm<ILoginProps>()
+  const { data, error } = useFetch<IResponse>(
+    'http://localhost:3001/api/v1/auth/signin',
+    {
+      method: 'POST',
+      body: JSON.stringify({ email: values.email, password: values.password })
+    }
+  )
 
   const sendForm = async (): Promise<void> => {
     console.log('values from form hook', values)
     console.log('errors from form hook', errors)
+    console.log('data from fetch hook', data)
+    console.log('error from fetch hook', error)
     // console.log({ email, password })
     // const result: IResponse = await (
     //   await fetch('http://localhost:3001/api/v1/auth/signin', {
