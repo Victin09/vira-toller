@@ -39,7 +39,7 @@ export const signup = async (req: Request, res: Response) => {
       options.secure = true;
     }
   
-    return res.status(200).cookie('_token', token, options).json({
+    return res.status(200).cookie('token', token, options).json({
       success: true,
       message: 'Account login successfully',
       data: { user },
@@ -64,7 +64,7 @@ export const signin = async (req: Request, res: Response) => {
   }
 
   // Check for user
-  const user: IUser = await User.findOne({ email: email }).select('+password');
+  const user: IUser = await User.findOne({ email: email }).select('-_id -createdAt -updatedAt -__v');
   if (!user) {
     return res.status(200).json({
       success: false,
@@ -74,7 +74,7 @@ export const signin = async (req: Request, res: Response) => {
 
   // Check if password matches
   const isMatch = user.matchPassword(password);
-  const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN_SECRET as string, {
+  const token = jwt.sign({ id: user.email }, process.env.JWT_TOKEN_SECRET as string, {
     expiresIn: process.env.JWT_TOKEN_EXPIRE,
   });
 
@@ -93,10 +93,10 @@ export const signin = async (req: Request, res: Response) => {
   }
 
   if (isMatch) {
-    return res.status(200).cookie('_token', token, options).json({
+    return res.status(200).cookie('token', token, options).json({
       success: true,
       message: 'Account login successfully',
-      data: { user },
+      data: { email: user.email, fullname: user.fullname, active: user.active },
     });
   } else {
     return res.status(200).json({

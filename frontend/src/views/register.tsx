@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from '../common/hooks/form'
+import { useForm } from '../common/hooks/useForm'
 import { Response } from '../common/types/fetch.type'
 import { SignUp } from '../models/auth.model'
 
@@ -15,15 +15,17 @@ const Register = () => {
     console.log('errors from form hook', errors)
     const { email, fullname, password } = values
     const result: Response<SignUp> = await (
-      await fetch('http://localhost:3001/api/v1/auth/signup', {
+      await fetch('http://192.168.1.112:3001/api/v1/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullname, password })
+        body: JSON.stringify({ email, fullname, password }),
+        credentials: 'include'
       })
     ).json()
     if (result.success) {
       navigate('/')
     } else {
+      console.log('result', result)
       setError(
         result.message === 'Email already exists'
           ? 'Email already exists'

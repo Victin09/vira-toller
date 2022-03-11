@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from '../common/hooks/form'
+import { useAuth } from '../common/hooks/useAuth'
+import { useForm } from '../common/hooks/useForm'
 import { Response } from '../common/types/fetch.type'
-import { SignIn } from '../models/auth.model'
+import { User } from '../models/user.model'
 
 interface ILoginProps {
   email: string
@@ -12,14 +13,15 @@ interface ILoginProps {
 const Login = () => {
   const navigate = useNavigate()
   const { values, errors, register, handleSubmit } = useForm<ILoginProps>()
+  const { login } = useAuth()
   const [error, setError] = useState('')
 
   const sendForm = async (): Promise<void> => {
     console.log('values from form hook', values)
     console.log('errors from form hook', errors)
     const { email, password } = values
-    const result: Response<SignIn> = await (
-      await fetch('http://localhost:3001/api/v1/auth/signin', {
+    const result: Response<User> = await (
+      await fetch('http://192.168.1.112:3001/api/v1/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -27,6 +29,8 @@ const Login = () => {
       })
     ).json()
     if (result.success) {
+      console.log('result', result)
+      login(result.data!)
       navigate('/')
     } else {
       setError(

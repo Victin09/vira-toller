@@ -1,10 +1,14 @@
+/* eslint-disable multiline-ternary */
 import { useEffect } from 'react'
-import { MdDarkMode, MdMenu } from 'react-icons/md'
+import { MdDarkMode } from 'react-icons/md'
+import { FiMenu } from 'react-icons/fi'
 import { useLocation } from 'react-router-dom'
 import vds from 'vira-design-system'
+import { useAuth } from '../common/hooks/useAuth'
 
 export const Navbar = () => {
   const { pathname } = useLocation()
+  const { isLoggedIn, user } = useAuth()
 
   useEffect(() => {
     console.log('pathname', pathname)
@@ -12,6 +16,11 @@ export const Navbar = () => {
 
   const changeTheme = () => {
     vds.toggleDarkMode()
+  }
+
+  const switchSidebar = () => {
+    console.log('Hago click')
+    vds.toggleSidebar()
   }
 
   return (
@@ -22,13 +31,44 @@ export const Navbar = () => {
       </span>
       {/* Navbar nav */}
       {/* Navbar contents */}
+      {isLoggedIn() ? (
+        <ul className="navbar-nav hidden-sm-and-down">
+          <li className="nav-item">
+            <a className="nav-link">Espacios de trabajo</a>
+          </li>
+          <li className="nav-item dropdown with-arrow">
+            <a
+              className="nav-link text-primary"
+              data-toggle="dropdown"
+              id="nav-link-dropdown-toggle"
+            >
+              Crear
+              <i className="fa fa-angle-down ml-5" aria-hidden="true"></i>
+            </a>
+            <div
+              className="dropdown-menu dropdown-menu-right"
+              aria-labelledby="nav-link-dropdown-toggle"
+            >
+              <a href="#" className="dropdown-item">
+                Tablero
+              </a>
+              <a href="#" className="dropdown-item">
+                Espacio de trabajo
+              </a>
+            </div>
+          </li>
+        </ul>
+      ) : (
+        <ul className="navbar-nav ml-auto hidden-sm-and-down">
+          <li className="nav-item">
+            <a className="nav-link">Iniciar sesión</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link">Registrarse</a>
+          </li>
+        </ul>
+      )}
       <ul className="navbar-nav ml-auto hidden-sm-and-down">
-        <li className="nav-item">
-          <a className="nav-link">Iniciar sesión</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link">Registrarse</a>
-        </li>
         <li className="nav-item" onClick={() => changeTheme()}>
           <a className="nav-link">
             <MdDarkMode />
@@ -36,27 +76,14 @@ export const Navbar = () => {
         </li>
       </ul>
       <div className="navbar-content ml-auto hidden-md-and-up">
-        <div className="dropdown with-arrow">
-          <button
-            className="btn navbar-menu-btn"
-            data-toggle="dropdown"
-            type="button"
-            id="navbar-dropdown-toggle-btn-1"
-          >
-            <MdMenu />
-          </button>
-          <div
-            className="dropdown-menu dropdown-menu-right w-200"
-            aria-labelledby="navbar-dropdown-toggle-btn-1"
-          >
-            <a className="dropdown-item nav-link">Iniciar sesión</a>
-            <a className="dropdown-item nav-link">Registrarse</a>
-            <div className="dropdown-divider" />
-            <a className="dropdown-item nav-link" onClick={() => changeTheme()}>
-              Cambiar tema
-            </a>
-          </div>
-        </div>
+        <button
+          className="btn btn-action navbar-menu-btn"
+          type="button"
+          id="navbar-dropdown-toggle-btn-1"
+          onClick={() => switchSidebar()}
+        >
+          <FiMenu />
+        </button>
       </div>
     </nav>
   )

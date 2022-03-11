@@ -16,7 +16,7 @@ import morganMiddleware from './middlewares/morgan.middleware';
 const app: Express = express();
 
 // Middlewares
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'http://192.168.1.112:3000'}));
 app.use(helmet());
 app.use(urlencoded({ extended: false }));
 app.use(json());
