@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import { MdDarkMode } from 'react-icons/md'
 import { FiMenu } from 'react-icons/fi'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import vds from 'vira-design-system'
 import { useAuth } from '../common/hooks/useAuth'
 
@@ -25,36 +25,48 @@ export const Navbar = () => {
 
   return (
     <nav className="navbar">
-      {/* Navbar text */}
-      <span className="navbar-text ml-5">
-        <span className="text-monospace">vira.Toller</span>
-      </span>
+      {/* Navbar brand */}
+      <div className="navbar-brand text-monospace">
+        <Link to="/">vira.Toller</Link>
+      </div>
       {/* Navbar nav */}
-      {/* Navbar contents */}
       {isLoggedIn() ? (
         <ul className="navbar-nav hidden-sm-and-down">
-          <li className="nav-item">
-            <a className="nav-link">Espacios de trabajo</a>
-          </li>
-          <li className="nav-item dropdown with-arrow">
+          <li className="nav-item dropdown">
             <a
-              className="nav-link text-primary"
+              className="nav-link"
+              data-toggle="dropdown"
+              id="nav-link-dropdown-toggle"
+            >
+              Espacios de trabajo
+            </a>
+            <div
+              className="dropdown-menu dropdown-menu-center"
+              aria-labelledby="nav-link-dropdown-toggle"
+            >
+              <a href="#" className="dropdown-item">
+                API builder
+              </a>
+            </div>
+          </li>
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link"
               data-toggle="dropdown"
               id="nav-link-dropdown-toggle"
             >
               Crear
-              <i className="fa fa-angle-down ml-5" aria-hidden="true"></i>
             </a>
             <div
-              className="dropdown-menu dropdown-menu-right"
+              className="dropdown-menu dropdown-menu-center"
               aria-labelledby="nav-link-dropdown-toggle"
             >
-              <a href="#" className="dropdown-item">
+              <Link to="/board/new" className="dropdown-item">
                 Tablero
-              </a>
-              <a href="#" className="dropdown-item">
+              </Link>
+              <Link to="/workspace/new" className="dropdown-item">
                 Espacio de trabajo
-              </a>
+              </Link>
             </div>
           </li>
         </ul>

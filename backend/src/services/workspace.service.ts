@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 
 import workspaceSchema, { IWorkspace } from '../models/workspace.model';
 
-// Find workspaces by user id
-export const findWorkspacesByUserId = async (req: Request, res: Response) => {
+// Find workspaces by user email
+export const findWorkspacesByUser = async (req: Request, res: Response) => {
   try {
-    const workspaces: IWorkspace[] = await workspaceSchema.find({ users: req.params.id }).select('-password');
+    const workspaces: IWorkspace[] = await workspaceSchema.find({ users: req.params.email }).select('-password');
     res.status(200).json({
       success: true,
       message: 'Workspaces found',
