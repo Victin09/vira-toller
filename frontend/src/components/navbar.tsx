@@ -4,7 +4,7 @@ import { MdDarkMode } from 'react-icons/md'
 import { FiMenu } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import vds from 'vira-design-system'
-import { useAuth } from '../common/hooks/useAuth'
+import { useAuth } from '../common/providers/useAuth'
 
 export const Navbar = () => {
   const { pathname } = useLocation()

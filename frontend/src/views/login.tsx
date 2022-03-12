@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../common/hooks/useAuth'
+import { useAuth } from '../common/providers/useAuth'
 import { useForm } from '../common/hooks/useForm'
 import { Response } from '../common/types/fetch.type'
 import { User } from '../models/user.model'

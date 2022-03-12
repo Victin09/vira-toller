@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAuth } from '../common/hooks/useAuth'
+import { useAuth } from '../common/providers/useAuth'
 import { useFetch } from '../common/hooks/useFetch'
 
 const Home = () => {
