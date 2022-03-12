@@ -1,37 +1,15 @@
 /* eslint-disable multiline-ternary */
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useForm } from '../common/hooks/useForm'
-import { Response } from '../common/types/fetch.type'
+import { useAuth } from '../common/providers/auth.provider'
 import { SignUp } from '../models/auth.model'
 
 const Register = () => {
-  const navigate = useNavigate()
   const { values, errors, register, handleSubmit } = useForm<SignUp>()
-  const [error, setError] = useState('')
+  const { error, signup } = useAuth()
 
   const sendForm = async (): Promise<void> => {
-    console.log('values from form hook', values)
-    console.log('errors from form hook', errors)
-    const { email, fullname, password } = values
-    const result: Response<SignUp> = await (
-      await fetch('http://192.168.1.112:3001/api/v1/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullname, password }),
-        credentials: 'include'
-      })
-    ).json()
-    if (result.success) {
-      navigate('/')
-    } else {
-      console.log('result', result)
-      setError(
-        result.message === 'Email already exists'
-          ? 'Email already exists'
-          : 'Something went wrong'
-      )
-    }
+    const { email, fullname, password, confirmPassword } = values
+    signup({ email, fullname, password, confirmPassword })
   }
 
   return (

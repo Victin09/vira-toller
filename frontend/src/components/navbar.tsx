@@ -4,11 +4,11 @@ import { MdDarkMode } from 'react-icons/md'
 import { FiMenu } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import vds from 'vira-design-system'
-import { useAuth } from '../common/providers/useAuth'
+import { useAuth } from '../common/providers/auth.provider'
 
 export const Navbar = () => {
   const { pathname } = useLocation()
-  const { isLoggedIn, user } = useAuth()
+  const { user } = useAuth()
 
   useEffect(() => {
     console.log('pathname', pathname)
@@ -30,7 +30,7 @@ export const Navbar = () => {
         <Link to="/">vira.Toller</Link>
       </div>
       {/* Navbar nav */}
-      {isLoggedIn() ? (
+      {user ? (
         <ul className="navbar-nav hidden-sm-and-down">
           <li className="nav-item dropdown">
             <a

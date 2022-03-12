@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { useAuth } from '../common/providers/useAuth'
+import { useAuth } from '../common/providers/auth.provider'
 import { useFetch } from '../common/hooks/useFetch'
 
 const Home = () => {
   const { user } = useAuth()
   const { data, error } = useFetch(
-    `http://localhost:3001/api/v1/boards/${user.email}`,
+    `http://localhost:3001/api/v1/boards/${user!.email}`,
     {
       method: 'GET',
       headers: {
