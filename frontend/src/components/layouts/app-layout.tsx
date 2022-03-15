@@ -28,15 +28,27 @@ export const AppLayout = () => {
           </div>
           <h5 className="sidebar-title">Getting started</h5>
           <div className="sidebar-divider"></div>
-          <a href="#" className="sidebar-link active">Installation</a>
-          <a href="#" className="sidebar-link">CLI commands</a>
+          <a href="#" className="sidebar-link active">
+            Installation
+          </a>
+          <a href="#" className="sidebar-link">
+            CLI commands
+          </a>
           <br />
           <h5 className="sidebar-title">Components</h5>
           <div className="sidebar-divider"></div>
-          <a href="#" className="sidebar-link">File explorer</a>
-          <a href="#" className="sidebar-link">Spreadsheet</a>
-          <a href="#" className="sidebar-link">Map</a>
-          <a href="#" className="sidebar-link">Messenger</a>
+          <a href="#" className="sidebar-link">
+            File explorer
+          </a>
+          <a href="#" className="sidebar-link">
+            Spreadsheet
+          </a>
+          <a href="#" className="sidebar-link">
+            Map
+          </a>
+          <a href="#" className="sidebar-link">
+            Messenger
+          </a>
         </div>
       </div>
       <Navbar />

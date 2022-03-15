@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SignIn, SignUp } from '../../models/auth.model'
 import { User } from '../../models/user.model'
@@ -15,7 +15,7 @@ const defaultState: AuthContextProps = {
 
 const AuthContext = createContext<AuthContextProps>(defaultState)
 
-export const ProviderAuth = ({ children }: any) => {
+export const AuthProvider = ({ children }: any) => {
   const auth = useProviderAuth()
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }
@@ -32,13 +32,14 @@ const useProviderAuth = () => {
 
   const signin = async (data: SignIn): Promise<void> => {
     const result: Response<User> = await (
-      await fetch('http://192.168.1.112:3001/api/v1/auth/signin', {
+      await fetch('http://localhost:3001/api/v1/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: data.email, password: data.password }),
         credentials: 'include'
       })
     ).json()
+    console.log('result', result)
     if (result.success) {
       console.log('result', result)
       setUser(result.data!)
@@ -54,10 +55,14 @@ const useProviderAuth = () => {
 
   const signup = async (data: SignUp) => {
     const result: Response<User> = await (
-      await fetch('http://192.168.1.112:3001/api/v1/auth/signup', {
+      await fetch('http://localhost:3001/api/v1/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, fullname: data.fullname, password: data.password }),
+        body: JSON.stringify({
+          email: data.email,
+          fullname: data.fullname,
+          password: data.password
+        }),
         credentials: 'include'
       })
     ).json()
@@ -82,7 +87,6 @@ const useProviderAuth = () => {
     signup
   }
 }
-
 
 // export const useAuth = () => {
 //   const [user, setUser] = useState<User>({} as User)

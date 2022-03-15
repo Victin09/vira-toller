@@ -11,6 +11,8 @@ const Login = () => {
   const { signin, error } = useAuth()
 
   const sendForm = async (): Promise<void> => {
+    console.log('values', values)
+    console.log('errors', errors)
     const { email, password } = values
     signin({ email, password })
   }

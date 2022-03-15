@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MdDarkMode } from 'react-icons/md'
 import { FiMenu } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { useAuth } from '../common/providers/auth.provider'
 export const Navbar = () => {
   const { pathname } = useLocation()
   const { user } = useAuth()
+  const [createWorkspace, setCreateWorkspace] = useState(false)
 
   useEffect(() => {
     console.log('pathname', pathname)
@@ -61,12 +62,12 @@ export const Navbar = () => {
               className="dropdown-menu dropdown-menu-center"
               aria-labelledby="nav-link-dropdown-toggle"
             >
-              <Link to="/board/new" className="dropdown-item">
+              <a href="#create-workspace" className="dropdown-item">
                 Tablero
-              </Link>
-              <Link to="/workspace/new" className="dropdown-item">
+              </a>
+              <a href="#create-workspace" className="dropdown-item">
                 Espacio de trabajo
-              </Link>
+              </a>
             </div>
           </li>
         </ul>
