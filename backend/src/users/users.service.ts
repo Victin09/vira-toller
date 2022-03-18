@@ -25,19 +25,19 @@ export class UsersService {
 
   findAll(): Promise<User[]> {
     try {
-      return this.userModel.find().select('-_id -password -__v').exec();
+      return this.userModel.find().select('-password -__v').exec();
     } catch (error) {
       throw new HttpException(error, 500);
     }
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} user`;
   }
 
   async findByEmail(email: string): Promise<User> {
     try {
-      return await this.userModel.findOne({ email });
+      return await this.userModel.findOne({ email }).select('-__v');
     } catch (error) {
       throw new HttpException(
         {
@@ -48,7 +48,7 @@ export class UsersService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     try {
       return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
     } catch (error) {
@@ -61,7 +61,7 @@ export class UsersService {
     }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }
