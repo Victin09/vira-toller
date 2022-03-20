@@ -30,6 +30,16 @@ export class WorkspacesController {
     return this.workspacesService.findOne(id);
   }
 
+  @Patch(':id/users/add/:userId')
+  addUser(@Param('id') id: string, @Param('userId') userId: string) {
+    return this.workspacesService.addUser(id, userId);
+  }
+
+  @Patch(':id/users/remove/:userId')
+  removeUser(@Param('id') id: string, @Param('userId') userId: string) {
+    return this.workspacesService.removeUser(id, userId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

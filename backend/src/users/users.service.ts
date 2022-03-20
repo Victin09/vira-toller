@@ -9,10 +9,10 @@ import { User, UserDocument } from './schemas/user.schema';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       const newUser = new this.userModel(createUserDto);
-      return newUser.save();
+      return await newUser.save();
     } catch (error) {
       throw new HttpException(
         {
@@ -23,16 +23,25 @@ export class UsersService {
     }
   }
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     try {
-      return this.userModel.find().select('-password -__v').exec();
+      return await this.userModel.find().select('-password -__v').exec();
     } catch (error) {
       throw new HttpException(error, 500);
     }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    try {
+      return await this.userModel.findById(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: user not found',
+        },
+        500,
+      );
+    }
   }
 
   async findByEmail(email: string): Promise<User> {
@@ -48,9 +57,11 @@ export class UsersService {
     }
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+      return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
+        new: true,
+      });
     } catch (error) {
       throw new HttpException(
         {

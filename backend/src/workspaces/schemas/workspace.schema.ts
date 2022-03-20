@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -23,12 +22,12 @@ export class Workspace {
   @Prop()
   image: string;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: String, ref: 'User' })
   owner: User;
 
   @Prop({
     required: true,
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    type: [{ type: String, ref: 'User' }],
   })
   members: User[];
 }

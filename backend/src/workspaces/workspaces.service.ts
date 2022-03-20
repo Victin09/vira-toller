@@ -4,12 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateWorkspaceDto } from './dto/create-workspace.dto';
 import { UpdateWorkspaceDto } from './dto/update-workspace.dto';
 import { Workspace, WorkspaceDocument } from './schemas/workspace.schema';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class WorkspacesService {
   constructor(
     @InjectModel(Workspace.name)
     private workspaceModel: Model<WorkspaceDocument>,
+    private userService: UsersService,
   ) {}
 
   async create(createWorkspaceDto: CreateWorkspaceDto): Promise<Workspace> {
@@ -39,7 +41,10 @@ export class WorkspacesService {
 
   async findAllByUser(id: string): Promise<Workspace[]> {
     try {
-      return await this.workspaceModel.find({ members: id }).exec();
+      return await this.workspaceModel
+        .find({ members: id })
+        .populate('members')
+        .exec();
     } catch (error) {
       throw new HttpException(
         {
@@ -63,11 +68,84 @@ export class WorkspacesService {
     }
   }
 
-  update(id: string, updateWorkspaceDto: UpdateWorkspaceDto) {
+  async addUser(id: string, userId: string): Promise<Workspace> {
     try {
-      return this.workspaceModel.findByIdAndUpdate(id, updateWorkspaceDto, {
-        new: true,
-      });
+      const user = await this.userService.findOne(userId);
+      const workspace = await this.workspaceModel.findById(id);
+      if (workspace.members.includes(user._id)) {
+        throw new HttpException(
+          {
+            error: 'Error: user already in workspace',
+          },
+          500,
+        );
+      }
+      return await this.workspaceModel.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            members: user._id,
+          },
+        },
+        {
+          new: true,
+        },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: workspace not found',
+        },
+        500,
+      );
+    }
+  }
+
+  async removeUser(id: string, userId: string): Promise<Workspace> {
+    try {
+      const user = await this.userService.findOne(userId);
+      const workspace = await this.workspaceModel.findById(id);
+      if (!workspace.members.includes(user._id)) {
+        throw new HttpException(
+          {
+            error: 'Error: user not in workspace',
+          },
+          500,
+        );
+      }
+      return await this.workspaceModel.findByIdAndUpdate(
+        id,
+        {
+          $pull: {
+            members: user._id,
+          },
+        },
+        {
+          new: true,
+        },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: workspace not found',
+        },
+        500,
+      );
+    }
+  }
+
+  async update(
+    id: string,
+    updateWorkspaceDto: UpdateWorkspaceDto,
+  ): Promise<Workspace> {
+    try {
+      return await this.workspaceModel.findByIdAndUpdate(
+        id,
+        updateWorkspaceDto,
+        {
+          new: true,
+        },
+      );
     } catch (error) {
       throw new HttpException(
         {
@@ -78,9 +156,9 @@ export class WorkspacesService {
     }
   }
 
-  remove(id: string) {
+  async remove(id: string): Promise<void> {
     try {
-      return this.workspaceModel.findByIdAndRemove(id);
+      return await this.workspaceModel.findByIdAndRemove(id);
     } catch (error) {
       throw new HttpException(
         {
