@@ -12,7 +12,7 @@ export class ListsService {
   async create(createListDto: CreateListDto): Promise<List> {
     try {
       const order = await this.listModel.countDocuments();
-      let list = this.listModel.findOne({
+      let list = await this.listModel.findOne({
         name: createListDto.name,
       });
       if (list) {
@@ -23,7 +23,7 @@ export class ListsService {
           500,
         );
       }
-      list = new this.listModel(createListDto);
+      list = new this.listModel({ ...createListDto, order });
       return list.save();
     } catch (error) {
       throw new HttpException(
@@ -35,19 +35,57 @@ export class ListsService {
     }
   }
 
-  findAll() {
-    return `This action returns all lists`;
+  async findAll(boardId: string): Promise<List[]> {
+    try {
+      return await this.listModel.find({ board: boardId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: lists not found',
+        },
+        500,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  async findOne(id: string): Promise<List> {
+    try {
+      return await this.listModel.findById(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: list not found',
+        },
+        500,
+      );
+    }
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async update(id: string, updateListDto: UpdateListDto): Promise<List> {
+    try {
+      return await this.listModel.findByIdAndUpdate(id, updateListDto, {
+        new: true,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: list not updated',
+        },
+        500,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async remove(id: string): Promise<void> {
+    try {
+      return await this.listModel.findByIdAndRemove(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: list not removed',
+        },
+        500,
+      );
+    }
   }
 }

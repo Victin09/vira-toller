@@ -36,19 +36,57 @@ export class BoardsService {
     }
   }
 
-  findAll() {
-    return `This action returns all boards`;
+  async findAll(workspaceId: string): Promise<Board[]> {
+    try {
+      return await this.boardModel.find({ workspace: workspaceId });
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: boards not found',
+        },
+        500,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  async findOne(id: string): Promise<Board> {
+    try {
+      return await this.boardModel.findById(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: board not found',
+        },
+        500,
+      );
+    }
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  async update(id: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
+    try {
+      return await this.boardModel.findByIdAndUpdate(id, updateBoardDto, {
+        new: true,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: board not updated',
+        },
+        500,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  async remove(id: string): Promise<void> {
+    try {
+      await this.boardModel.findByIdAndRemove(id);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: board not removed',
+        },
+        500,
+      );
+    }
   }
 }

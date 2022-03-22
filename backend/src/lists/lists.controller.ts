@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
@@ -12,23 +20,23 @@ export class ListsController {
     return this.listsService.create(createListDto);
   }
 
-  @Get()
-  findAll() {
-    return this.listsService.findAll();
+  @Get('board/:id')
+  findAll(@Param('id') boardId: string) {
+    return this.listsService.findAll(boardId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.listsService.findOne(+id);
+    return this.listsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
-    return this.listsService.update(+id, updateListDto);
+    return this.listsService.update(id, updateListDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.listsService.remove(+id);
+    return this.listsService.remove(id);
   }
 }
