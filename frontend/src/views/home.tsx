@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAuth } from '../common/providers/auth.provider'
-import { useFetch } from '../common/hooks/useFetch'
+import { useFetch } from '../common/hooks/use-fetch'
 
 const Home = () => {
   const { user } = useAuth()

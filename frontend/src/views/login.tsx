@@ -1,5 +1,6 @@
 import { useAuth } from '../common/providers/auth.provider'
-import { useForm } from '../common/hooks/useForm'
+import { useForm } from '../common/hooks/use-form'
+import { Link } from 'react-router-dom'
 
 interface ILoginProps {
   email: string
@@ -18,67 +19,68 @@ const Login = () => {
   }
 
   return (
-    <div className="h-full d-flex justify-content-center align-items-center">
-      <div className="w-400 mw-full">
-        <div className="card shadow-lg border-transparent p-0">
-          <h2 className="card-title font-size-18 m-0 text-center pt-10">
-            Iniciar sesión
-          </h2>
-          {error && <span className="invalid-feedback">{error}</span>}
-          <div className="content">
-            <form onSubmit={handleSubmit(sendForm)} noValidate>
-              <div className="form-group">
-                <label htmlFor="email" className="required">
-                  Correo electrónico
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  placeholder="Username"
-                  {...register('email', {
-                    required: {
-                      value: true,
-                      message: 'El correo es requerido'
-                    },
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: 'El correo no es válido'
-                    }
-                  })}
-                />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="password" className="required">
-                  Contraseña
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                  {...register('password', {
-                    required: {
-                      value: true,
-                      message: 'La contraseña es requerida'
-                    }
-                  })}
-                />
-                {errors.password && (
-                  <div className="invalid-feedback">{errors.password}</div>
-                )}
-              </div>
+    <div className="h-100p u-flex u-items-center u-justify-center">
+      <div className="card p-2 max-w-sm">
+        <h5 className="u-text-center">Iniciar sesión</h5>
+        <div className="content m-0">
+          <form onSubmit={handleSubmit(sendForm)} noValidate>
+            <div className="col-lg-6">
+              <label>Correo electrónico</label>
               <input
-                className="btn btn-primary btn-block"
-                value="Iniciar sesión"
-                readOnly
-                type="submit"
+                className={
+                  'input--sm' + (errors.email ? ' text-danger input-error' : '')
+                }
+                type="text"
+                placeholder="nombre@email.com"
+                {...register('email', {
+                  required: {
+                    value: true,
+                    message: 'El correo es requerido'
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: 'El correo no es válido'
+                  }
+                })}
               />
-            </form>
-          </div>
+              {errors.email && (
+                <span className="info text-danger">{errors.email}</span>
+              )}
+            </div>
+            <div className="col-lg-6">
+              <label>Contraseña</label>
+              <input
+                className={
+                  'input--sm' +
+                  (errors.password ? ' text-danger input-error' : '')
+                }
+                type="password"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: 'La contraseña es requerida'
+                  }
+                })}
+              />
+              {errors.password && (
+                <span className="info text-danger">{errors.password}</span>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="btn-transparent outline w-100p mt-2"
+            >
+              Iniciar sesión
+            </button>
+          </form>
+        </div>
+        <div className="card__footer level content">
+          <span>
+            ¿No tienes cuenta? Puedes crear una{' '}
+            <Link to="/signup" className="u u-LR">
+              aquí
+            </Link>
+          </span>
         </div>
       </div>
     </div>

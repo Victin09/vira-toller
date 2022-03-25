@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import { useForm } from '../common/hooks/useForm'
+import { useForm } from '../common/hooks/use-form'
 import { useAuth } from '../common/providers/auth.provider'
 import { SignUp } from '../models/auth.model'
 

@@ -1,19 +1,13 @@
 import { Outlet } from 'react-router-dom'
-import vds from 'vira-design-system'
 import { Navbar } from '../navbar'
 
 export const AppLayout = () => {
-  const switchSidebar = () => {
-    vds.toggleSidebar()
-  }
-
   return (
     <div
       className="page-wrapper with-navbar with-sidebar"
       data-sidebar-type="overlayed-all"
       data-sidebar-hidden="hidden"
     >
-      <div className="sidebar-overlay" onClick={() => switchSidebar()} />
       <div className="sidebar">
         <div className="sidebar-menu">
           <a href="#" className="sidebar-brand">

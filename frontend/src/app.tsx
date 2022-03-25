@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom'
 import './app.css'
 import { ProtectedRoute } from './common/router/private.route'
 import { AppLayout } from './components/layouts/app-layout'
-import { HomeLayout } from './components/layouts/landing-layout'
 import Welcome from './views/welcome'
 import Login from './views/login'
 import Register from './views/register'
@@ -16,11 +15,11 @@ const App = () => {
     <AuthProvider>
       <Routes>
         <Route element={<PublicRoute />}>
-          <Route element={<HomeLayout />}>
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/sign-in" element={<Login />} />
-            <Route path="/sign-up" element={<Register />} />
-          </Route>
+          {/* <Route element={<HomeLayout />}> */}
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/signin" element={<Login />} />
+          <Route path="/signup" element={<Register />} />
+          {/* </Route> */}
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>

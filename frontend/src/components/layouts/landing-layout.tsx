@@ -1,87 +1,87 @@
 import { MdDarkMode } from 'react-icons/md'
 import { Link, Outlet } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi'
-import vds from 'vira-design-system'
 
 export const HomeLayout = () => {
-  const switchTheme = () => {
-    vds.toggleDarkMode()
-  }
-
-  const switchSidebar = () => {
-    vds.toggleSidebar()
-  }
-
   return (
-    <div
-      className="page-wrapper with-navbar with-sidebar"
-      data-sidebar-type="overlayed-all"
-      data-sidebar-hidden="hidden"
-    >
-      <div className="sidebar-overlay" onClick={() => switchSidebar()} />
-      <nav
-        className="navbar"
-        style={{ backgroundColor: 'transparent', border: 'none' }}
-      >
-        <div className="container-fluid">
-          <div className="navbar-brand text-monospace">
-            <Link to="/">vira.Toller</Link>
-          </div>
-          <ul className="navbar-nav ml-auto hidden-sm-and-down">
-            <li className="nav-item">
-              <Link className="nav-link" to="/sign-in">
-                Iniciar sesión
-              </Link>
-            </li>
-            <Link
-              className="d-none d-md-flex ml-auto btn btn-primary"
-              type="button"
-              to="/sign-up"
-            >
-              Sign up
-            </Link>
-            <li className="nav-item">
-              <a className="nav-link" onClick={() => switchTheme()}>
-                <MdDarkMode />
-              </a>
-            </li>
-          </ul>
-          <div className="navbar-content ml-auto hidden-md-and-up">
-            <button
-              className="btn btn-action navbar-menu-btn"
-              type="button"
-              id="navbar-dropdown-toggle-btn-1"
-              onClick={() => switchSidebar()}
-            >
-              <FiMenu />
-            </button>
-          </div>
-        </div>
-      </nav>
-      <div className="sidebar">
-        <div className="sidebar-menu">
-          <Link to="/" className="sidebar-brand">
-            {/* <img src="..." alt="..." /> */}
-            vira.Toller
-          </Link>
-          <div className="sidebar-divider mt-20"></div>
-          <Link to="/sign-in" className="sidebar-link">
-            Sign in
-          </Link>
-          <Link to="/sign-up" className="sidebar-link">
-            Register
-          </Link>
-          <br />
-          <div className="sidebar-divider"></div>
-          <a className="sidebar-link" onClick={() => switchTheme()}>
-            <span className="sidebar-icon">
-              <MdDarkMode />
-            </span>
+    <div className="header header-fixed u-unselectable header-animated">
+      <div className="header-brand">
+        <div className="nav-item no-hover">
+          <a>
+            <h6 className="title">Logo</h6>
           </a>
         </div>
+        <div className="nav-item nav-btn" id="header-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
-      <div className="content-wrapper">
-        <Outlet />
+      <div className="header-nav" id="header-menu">
+        <div className="nav-left">
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-github" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-slack" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item has-sub toggle-hover" id="dropdown">
+            <a className="nav-dropdown-link">Animated</a>
+            <ul className="dropdown-menu dropdown-animated" role="menu">
+              <li role="menu-item">
+                <a href="#">First Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Second Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Third Item</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="nav-right">
+          <div className="nav-item active">
+            <a href="#">Active</a>
+          </div>
+          <div className="nav-item">
+            <a href="#">Link 1</a>
+          </div>
+          <div className="nav-item has-sub" id="dropdown">
+            <a className="nav-dropdown-link">Click Me</a>
+            <ul className="dropdown-menu" role="menu">
+              <li role="menu-item">
+                <a href="#">First Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Second Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Third Item</a>
+              </li>
+              <li className="dropdown-menu-divider"></li>
+              <li role="menu-item">
+                <a href="#">Fourth Item</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   )

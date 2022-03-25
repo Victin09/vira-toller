@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { MdDarkMode } from 'react-icons/md'
 import { FiMenu } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
-import vds from 'vira-design-system'
 import { useAuth } from '../common/providers/auth.provider'
 
 export const Navbar = () => {
@@ -15,89 +14,86 @@ export const Navbar = () => {
     console.log('pathname', pathname)
   }, [pathname])
 
-  const changeTheme = () => {
-    vds.toggleDarkMode()
-  }
-
-  const switchSidebar = () => {
-    console.log('Hago click')
-    vds.toggleSidebar()
-  }
-
   return (
-    <nav className="navbar">
-      {/* Navbar brand */}
-      <div className="navbar-brand text-monospace">
-        <Link to="/">vira.Toller</Link>
-      </div>
-      {/* Navbar nav */}
-      {user ? (
-        <ul className="navbar-nav hidden-sm-and-down">
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link"
-              data-toggle="dropdown"
-              id="nav-link-dropdown-toggle"
-            >
-              Espacios de trabajo
-            </a>
-            <div
-              className="dropdown-menu dropdown-menu-center"
-              aria-labelledby="nav-link-dropdown-toggle"
-            >
-              <a href="#" className="dropdown-item">
-                API builder
-              </a>
-            </div>
-          </li>
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link"
-              data-toggle="dropdown"
-              id="nav-link-dropdown-toggle"
-            >
-              Crear
-            </a>
-            <div
-              className="dropdown-menu dropdown-menu-center"
-              aria-labelledby="nav-link-dropdown-toggle"
-            >
-              <a href="#create-workspace" className="dropdown-item">
-                Tablero
-              </a>
-              <a href="#create-workspace" className="dropdown-item">
-                Espacio de trabajo
-              </a>
-            </div>
-          </li>
-        </ul>
-      ) : (
-        <ul className="navbar-nav ml-auto hidden-sm-and-down">
-          <li className="nav-item">
-            <a className="nav-link">Iniciar sesión</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link">Registrarse</a>
-          </li>
-        </ul>
-      )}
-      <ul className="navbar-nav ml-auto hidden-sm-and-down">
-        <li className="nav-item" onClick={() => changeTheme()}>
-          <a className="nav-link">
-            <MdDarkMode />
+    <div className="header header-fixed u-unselectable header-animated">
+      <div className="header-brand">
+        <div className="nav-item no-hover">
+          <a>
+            <h6 className="title">Logo</h6>
           </a>
-        </li>
-      </ul>
-      <div className="navbar-content ml-auto hidden-md-and-up">
-        <button
-          className="btn btn-action navbar-menu-btn"
-          type="button"
-          id="navbar-dropdown-toggle-btn-1"
-          onClick={() => switchSidebar()}
-        >
-          <FiMenu />
-        </button>
+        </div>
+        <div className="nav-item nav-btn" id="header-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
-    </nav>
+      <div className="header-nav" id="header-menu">
+        <div className="nav-left">
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-github" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-slack" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item text-center">
+            <a href="#">
+              <span className="icon">
+                <i className="fab fa-wrapper fa-twitter" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div className="nav-item has-sub toggle-hover" id="dropdown">
+            <a className="nav-dropdown-link">Animated</a>
+            <ul className="dropdown-menu dropdown-animated" role="menu">
+              <li role="menu-item">
+                <a href="#">First Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Second Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Third Item</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="nav-right">
+          <div className="nav-item active">
+            <a href="#">Active</a>
+          </div>
+          <div className="nav-item">
+            <a href="#">Link 1</a>
+          </div>
+          <div className="nav-item has-sub" id="dropdown">
+            <a className="nav-dropdown-link">Click Me</a>
+            <ul className="dropdown-menu" role="menu">
+              <li role="menu-item">
+                <a href="#">First Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Second Item</a>
+              </li>
+              <li role="menu-item">
+                <a href="#">Third Item</a>
+              </li>
+              <li className="dropdown-menu-divider"></li>
+              <li role="menu-item">
+                <a href="#">Fourth Item</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
