@@ -1,4 +1,5 @@
 /* eslint-disable multiline-ternary */
+import { Link } from 'react-router-dom'
 import { useForm } from '../common/hooks/use-form'
 import { useAuth } from '../common/providers/auth.provider'
 import { SignUp } from '../models/auth.model'
@@ -13,117 +14,88 @@ const Register = () => {
   }
 
   return (
-    <div className="h-full d-flex justify-content-center align-items-center">
-      <div className="w-400 mw-full">
-        <div className="card shadow-lg border-transparent overflow-auto p-0">
-          <h2 className="card-title font-size-18 m-0 text-center pt-10">
-            Crear una nueva cuenta
-          </h2>
-          {error && <span className="invalid-feedback">{error}</span>}
-          <form
-            className="content"
-            onSubmit={handleSubmit(sendForm)}
-            noValidate
-          >
-            <div className="form-group">
-              <label htmlFor="email" className="required">
-                Correo electrónico
-              </label>
+    <div className="h-100p u-flex u-items-center u-justify-center">
+      <div className="card p-2 max-w-sm">
+        <h5 className="u-text-center">Registrate</h5>
+        <div className="content m-0">
+          {error && <span className="info text-danger">{error}</span>}
+          <form onSubmit={handleSubmit(sendForm)} noValidate>
+            <div className="col-lg-6">
+              <label>Nombre y apellidos</label>
               <input
-                type="email"
-                className="form-control"
-                id="email"
-                placeholder="example@example.com"
-                {...register('email', {
-                  required: {
-                    value: true,
-                    message: 'El correo electrónico es requerido'
-                  },
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                    message: 'El correo electrónico no es válido'
-                  }
-                })}
-              />
-              {errors.email && (
-                <div className="invalid-feedback">{errors.email}</div>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="fullName" className="required">
-                Nombre
-              </label>
-              <input
+                className={
+                  'input--sm' +
+                  (errors.fullname ? ' text-danger input-error' : '')
+                }
                 type="text"
-                className="form-control"
-                id="fullName"
-                placeholder="John Doe"
                 {...register('fullname', {
                   required: {
                     value: true,
-                    message: 'El nombre es requerido'
+                    message: 'El nombre es obligatorio'
                   }
                 })}
               />
               {errors.fullname && (
-                <div className="invalid-feedback">{errors.fullname}</div>
+                <span className="info text-danger">{errors.fullname}</span>
               )}
             </div>
-            <div className="form-group">
-              <label htmlFor="password" className="required">
-                Contraseña
-              </label>
+            <div className="col-lg-6">
+              <label>Correo electrónico</label>
               <input
+                className={
+                  'input--sm' + (errors.email ? ' text-danger input-error' : '')
+                }
+                type="text"
+                placeholder="nombre@email.com"
+                {...register('email', {
+                  required: {
+                    value: true,
+                    message: 'El correo es requerido'
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: 'El correo no es válido'
+                  }
+                })}
+              />
+              {errors.email && (
+                <span className="info text-danger">{errors.email}</span>
+              )}
+            </div>
+            <div className="col-lg-6">
+              <label>Contraseña</label>
+              <input
+                className={
+                  'input--sm' +
+                  (errors.password ? ' text-danger input-error' : '')
+                }
                 type="password"
-                className="form-control"
-                id="password"
-                placeholder="Password"
-                required
                 {...register('password', {
                   required: {
                     value: true,
                     message: 'La contraseña es requerida'
-                  },
-                  minLength: {
-                    value: 8,
-                    message: 'La contraseña debe tener al menos 8 caracteres'
                   }
                 })}
               />
               {errors.password && (
-                <div className="invalid-feedback">{errors.password}</div>
+                <span className="info text-danger">{errors.password}</span>
               )}
             </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword" className="required">
-                Confirmar contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                placeholder="Password"
-                {...register('confirmPassword', {
-                  required: {
-                    value: true,
-                    message: 'La contraseña es requerida'
-                  },
-                  minLength: {
-                    value: 8,
-                    message: 'La contraseña debe tener al menos 8 caracteres'
-                  }
-                })}
-              />
-              {errors.confirmPassword && (
-                <div className="invalid-feedback">{errors.confirmPassword}</div>
-              )}
-            </div>
-            <input
-              className="btn btn-primary btn-block"
-              value="Crear cuenta"
+            <button
               type="submit"
-            />
+              className="btn-transparent outline w-100p mt-2"
+            >
+              Enviar
+            </button>
           </form>
+        </div>
+        <div className="card__footer level content">
+          <span>
+            ¿Ya tienes cuenta? Puedes iniciar sesión{' '}
+            <Link to="/signin" className="u u-RL">
+              aquí
+            </Link>
+          </span>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useAuth } from '../providers/auth.provider'
 
 // Protected route guard for private routes. Check token in cookie and verify it.
 export const ProtectedRoute = () => {
-  const { user } = useAuth()
-  return user ? <Outlet /> : <Navigate to="/welcome" />
+  const { getUser } = useAuth()
+  console.log('user', getUser())
+  return getUser() ? <Outlet /> : <Navigate to="/welcome" />
 }

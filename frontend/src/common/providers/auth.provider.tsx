@@ -6,9 +6,8 @@ import { Response } from '../types/fetch.type'
 import { AuthContextProps } from '../interfaces/context.interface'
 
 const defaultState: AuthContextProps = {
-  loading: false,
   error: '',
-  user: null,
+  getUser: (): User | void => {},
   signin: async (): Promise<void> => {},
   signup: async (): Promise<void> => {}
 }
@@ -27,22 +26,33 @@ export const useAuth = () => {
 const useProviderAuth = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const getUser = (): User | void => {
+    if (user) {
+      return user
+    }
+    const userString = localStorage.getItem('user')
+    if (userString) {
+      const user = JSON.parse(atob(userString))
+      return user
+    }
+    navigate('/signin')
+  }
 
   const signin = async (data: SignIn): Promise<void> => {
     const result: Response<User> = await (
-      await fetch('http://localhost:3001/api/v1/auth/signin', {
+      await fetch('http://localhost:3000/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: data.email, password: data.password }),
         credentials: 'include'
       })
     ).json()
-    console.log('result', result)
-    if (result.success) {
-      console.log('result', result)
+    console.log(result)
+    if (result.status === 'success') {
       setUser(result.data!)
+      localStorage.setItem('user', btoa(JSON.stringify(result.data!)))
       navigate('/')
     } else {
       setError(
@@ -55,7 +65,7 @@ const useProviderAuth = () => {
 
   const signup = async (data: SignUp) => {
     const result: Response<User> = await (
-      await fetch('http://localhost:3001/api/v1/auth/signup', {
+      await fetch('http://localhost:3000/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -66,7 +76,7 @@ const useProviderAuth = () => {
         credentials: 'include'
       })
     ).json()
-    if (result.success) {
+    if (result.status === 'success') {
       setUser(result.data!)
       navigate('/')
     } else {
@@ -80,9 +90,8 @@ const useProviderAuth = () => {
   }
 
   return {
-    user,
-    loading,
     error,
+    getUser,
     signin,
     signup
   }

@@ -49,6 +49,25 @@ export class BoardsService {
     }
   }
 
+  async findAllByWorkspaceAndUser(
+    workspaceId: string,
+    userId: string,
+  ): Promise<Board[]> {
+    try {
+      return await this.boardModel.find({
+        workspace: workspaceId,
+        members: userId,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: boards not found',
+        },
+        500,
+      );
+    }
+  }
+
   async findOne(id: string): Promise<Board> {
     try {
       return await this.boardModel.findById(id);
@@ -56,6 +75,39 @@ export class BoardsService {
       throw new HttpException(
         {
           error: 'Error: board not found',
+        },
+        500,
+      );
+    }
+  }
+
+  // Find all boards by user and aggregate them by workspace
+  async getAllBoardsByUserAggregateByWorkspace(
+    userId: string,
+  ): Promise<Board[]> {
+    try {
+      return await this.boardModel.aggregate([
+        {
+          $match: {
+            members: userId,
+          },
+        },
+        {
+          $lookup: {
+            from: 'workspaces',
+            localField: 'workspace',
+            foreignField: '_id',
+            as: 'workspace',
+          },
+        },
+        {
+          $unwind: '$workspace',
+        },
+      ]);
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: boards not found',
         },
         500,
       );

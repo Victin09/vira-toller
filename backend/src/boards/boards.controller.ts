@@ -30,6 +30,11 @@ export class BoardsController {
     return this.boardsService.findOne(id);
   }
 
+  @Get('user/:id')
+  findAllByUser(@Param('id') id: string) {
+    return this.boardsService.getAllBoardsByUserAggregateByWorkspace(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
     return this.boardsService.update(id, updateBoardDto);

@@ -6,7 +6,7 @@ export type Action<T> =
   | { type: 'error'; payload: Error }
 
 export type Response<T> = {
-  success: boolean
+  status: string
   message?: string
   data?: T
 }

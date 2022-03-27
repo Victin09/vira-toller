@@ -30,6 +30,11 @@ export class WorkspacesController {
     return this.workspacesService.findOne(id);
   }
 
+  @Get('/user/:id/boards')
+  findAllBoardsByUser(@Param('id') id: string) {
+    return this.workspacesService.getAllWorkspacesWithBoardsByUser(id);
+  }
+
   @Patch(':id/users/add/:userId')
   addUser(@Param('id') id: string, @Param('userId') userId: string) {
     return this.workspacesService.addUser(id, userId);

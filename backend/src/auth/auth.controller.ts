@@ -13,11 +13,11 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   async signin(@Body() data: SignInDto, @Res() res: Response): Promise<void> {
-    const token = await this.authService.signin(data);
-    res.cookie('token', token, { httpOnly: true }).json({
+    const result = await this.authService.signin(data);
+    res.cookie('token', result.token, { httpOnly: true }).json({
       status: 'success',
       message: 'User signed in successfully',
-      data: data,
+      data: result.user,
     });
   }
 

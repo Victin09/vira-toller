@@ -72,6 +72,21 @@ export class UsersService {
     }
   }
 
+  async updateLastLogin(email: string) {
+    try {
+      return await this.userModel
+        .findOneAndUpdate({ email }, { lastLogin: new Date() }, { new: true })
+        .select('-password -__v');
+    } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: user not updated',
+        },
+        500,
+      );
+    }
+  }
+
   remove(id: string) {
     return `This action removes a #${id} user`;
   }

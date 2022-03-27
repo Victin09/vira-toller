@@ -21,9 +21,13 @@ export class AuthService {
     return null;
   }
 
-  async signin(user: any): Promise<string> {
+  async signin(user: any): Promise<{ user: any; token: string }> {
     const payload = { email: user.email };
-    return this.jwtService.sign(payload);
+    const result = await this.userService.updateLastLogin(user.email);
+    return {
+      user: result,
+      token: this.jwtService.sign(payload),
+    };
   }
 
   async signup(data: SignUpDto): Promise<string> {

@@ -1,10 +1,12 @@
 import { Model } from 'mongoose';
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateWorkspaceDto } from './dto/create-workspace.dto';
 import { UpdateWorkspaceDto } from './dto/update-workspace.dto';
 import { Workspace, WorkspaceDocument } from './schemas/workspace.schema';
 import { UsersService } from '../users/users.service';
+import { BoardsService } from 'src/boards/boards.service';
+import { Board } from 'src/boards/schemas/board.schema';
 
 @Injectable()
 export class WorkspacesService {
@@ -12,6 +14,7 @@ export class WorkspacesService {
     @InjectModel(Workspace.name)
     private workspaceModel: Model<WorkspaceDocument>,
     private userService: UsersService,
+    private boardService: BoardsService,
   ) {}
 
   async create(createWorkspaceDto: CreateWorkspaceDto): Promise<Workspace> {
@@ -59,6 +62,43 @@ export class WorkspacesService {
     try {
       return await this.workspaceModel.findById(id);
     } catch (error) {
+      throw new HttpException(
+        {
+          error: 'Error: workspace not found',
+        },
+        500,
+      );
+    }
+  }
+
+  // Get all workspaces and boards from workspace by user without populating
+  async getAllWorkspacesWithBoardsByUser(id: string): Promise<
+    {
+      workspace: Workspace;
+      boards: Board[];
+    }[]
+  > {
+    try {
+      const result: {
+        workspace: Workspace;
+        boards: Board[];
+      }[] = [];
+      const workspaces = await this.workspaceModel
+        .find({ members: id })
+        .populate('members')
+        .select('-__v -password -newUser -lastLogin -createdAt -updatedAt');
+      for (const workspace of workspaces) {
+        result.push({
+          workspace,
+          boards: await this.boardService.findAllByWorkspaceAndUser(
+            workspace._id,
+            id,
+          ),
+        });
+      }
+      return result;
+    } catch (error) {
+      Logger.error(error);
       throw new HttpException(
         {
           error: 'Error: workspace not found',
