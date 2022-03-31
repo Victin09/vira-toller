@@ -1,4 +1,11 @@
+import { Board } from './board.model'
 import { User } from './user.model'
+
+export interface WorkspaceHome {
+  id: string
+  name: string
+  boards: Board[]
+}
 
 export interface WorkspaceForm {
   name: string

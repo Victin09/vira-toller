@@ -1,7 +1,3 @@
-import { MdDarkMode } from 'react-icons/md'
-import { Link, Outlet } from 'react-router-dom'
-import { FiMenu } from 'react-icons/fi'
-
 export const HomeLayout = () => {
   return (
     <div className="header header-fixed u-unselectable header-animated">

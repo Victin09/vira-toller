@@ -76,7 +76,10 @@ const Login = () => {
                         vds-icon="icon: lock"
                       ></span>
                       <input
-                        className="vds-input vds-border-rounded"
+                        className={
+                          'vds-input vds-form-control vds-border-rounded' +
+                          (errors.password ? ' vds-form-danger' : '')
+                        }
                         type="password"
                         name="password"
                         placeholder="Password"
@@ -86,16 +89,21 @@ const Login = () => {
                             message: 'Password is required'
                           },
                           minLength: {
-                            value: 8,
+                            value: 6,
                             message: 'Password must be at least 8 characters'
                           }
                         })}
                       />
                     </div>
+                    {errors.password && (
+                      <div className="vds-text-danger vds-text-italic">
+                        {errors.password}
+                      </div>
+                    )}
                   </div>
-                  <div className="vds-margin vds-text-right@s vds-text-center vds-text-small">
+                  {/* <div className="vds-margin vds-text-right@s vds-text-center vds-text-small">
                     <a href="#">Forgot Password?</a>
-                  </div>
+                  </div> */}
                   <div className="vds-margin">
                     <button
                       type="submit"

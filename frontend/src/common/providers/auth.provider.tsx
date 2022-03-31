@@ -37,12 +37,12 @@ const useProviderAuth = () => {
       const user = JSON.parse(atob(userString))
       return user
     }
-    navigate('/signin')
+    // navigate('/signin')
   }
 
   const signin = async (data: SignIn): Promise<void> => {
     const result: Response<User> = await (
-      await fetch('http://localhost:3000/auth/signin', {
+      await fetch('http://192.168.1.112:3000/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: data.email, password: data.password }),
@@ -65,7 +65,7 @@ const useProviderAuth = () => {
 
   const signup = async (data: SignUp) => {
     const result: Response<User> = await (
-      await fetch('http://localhost:3000/auth/signup', {
+      await fetch('http://192.168.1.112:3000/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

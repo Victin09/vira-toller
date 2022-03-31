@@ -13,6 +13,7 @@ export const useForm = <T extends Record<keyof T, any> = {}>(): IForm<T> => {
       // if the required rule is present
       if (validation.required) {
         // if the value is empty
+        console.log('im in')
         if (!value || !value.trim()) {
           return validation.required.message || 'This field is required'
         }
@@ -85,7 +86,7 @@ export const useForm = <T extends Record<keyof T, any> = {}>(): IForm<T> => {
         e.preventDefault()
         const error = Object.values(errors).find((err) => err)
         if (!error) {
-          callback()
+          return callback()
         }
       }
 
