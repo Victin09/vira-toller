@@ -1,1 +1,1 @@
-declare module "vira-design-system";
+declare module 'vds-ui/*'

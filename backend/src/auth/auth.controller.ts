@@ -1,13 +1,15 @@
 import { Response } from 'express';
-import { Controller, Post, UseGuards, Body, Res, Logger } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Res } from '@nestjs/common';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { SignInDto } from './dto/signin.dto';
 import { SignUpDto } from './dto/signup.dto';
 
+// @ApiSecurity('basic')
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  private logger = new Logger('AuthController');
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
