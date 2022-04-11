@@ -19,105 +19,70 @@ const Login = () => {
   }
 
   return (
-    <div className="vds-height-1-1 vds-flex vds-flex-middle vds-flex-center">
-      <div
-        className="vds-section vds-section-muted vds-width-1-1 vds-flex vds-flex-middle vds-animation-fade"
-        data-vds-height-viewport
-      >
-        <div className="vds-container">
-          <div
-            className="vds-grid-margin vds-grid vds-grid-stack"
-            data-vds-grid
-          >
-            <div className="vds-width-1-1@m">
-              <div className="vds-margin vds-width-large vds-margin-auto vds-card vds-card-default vds-card-body vds-border-rounded vds-box-shadow-large">
-                <h3 className="vds-card-title vds-text-center">vira.TOLLER</h3>
-                <form
-                  noValidate
-                  onSubmit={handleSubmit(sendForm)}
-                  className="vds-margin-medium-top"
-                >
-                  <div className="vds-margin">
-                    <div className="vds-inline vds-width-1-1">
-                      <span
-                        className="vds-form-icon"
-                        vds-icon="icon: mail"
-                      ></span>
-                      <input
-                        className={
-                          'vds-input vds-form-control vds-border-rounded' +
-                          (errors.email ? ' vds-form-danger' : '')
-                        }
-                        type="text"
-                        name="email"
-                        placeholder="Email address"
-                        {...register('email', {
-                          required: {
-                            value: true,
-                            message: 'Email is required'
-                          },
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: 'Invalid email address'
-                          }
-                        })}
-                      />
-                    </div>
-                    {errors.email && (
-                      <div className="vds-text-danger vds-text-italic">
-                        {errors.email}
-                      </div>
-                    )}
-                  </div>
-                  <div className="vds-margin">
-                    <div className="vds-inline vds-width-1-1">
-                      <span
-                        className="vds-form-icon"
-                        vds-icon="icon: lock"
-                      ></span>
-                      <input
-                        className={
-                          'vds-input vds-form-control vds-border-rounded' +
-                          (errors.password ? ' vds-form-danger' : '')
-                        }
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        {...register('password', {
-                          required: {
-                            value: true,
-                            message: 'Password is required'
-                          },
-                          minLength: {
-                            value: 6,
-                            message: 'Password must be at least 8 characters'
-                          }
-                        })}
-                      />
-                    </div>
-                    {errors.password && (
-                      <div className="vds-text-danger vds-text-italic">
-                        {errors.password}
-                      </div>
-                    )}
-                  </div>
-                  {/* <div className="vds-margin vds-text-right@s vds-text-center vds-text-small">
-                    <a href="#">Forgot Password?</a>
-                  </div> */}
-                  <div className="vds-margin">
-                    <button
-                      type="submit"
-                      className="vds-button vds-button-primary vds-width-1-1 vds-border-rounded"
-                    >
-                      Login
-                    </button>
-                  </div>
-                  <div className="vds-text-small vds-text-center">
-                    Not registered? <Link to="/signup">Create an account</Link>
-                  </div>
-                </form>
+    <div className="row h-100 align-items-center justify-content-center">
+      <div className="col-sm-12 col-md-4">
+        <div className="card shadow p-3">
+          <div className="card-body">
+            <h2 className="card-title text-center mb-2">Signin</h2>
+            <form onSubmit={handleSubmit(sendForm)} noValidate>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className={
+                    'form-control' + (errors.email ? ' is-invalid' : '')
+                  }
+                  id="email"
+                  placeholder="vira@toller.com"
+                  name="email"
+                  {...register('email', {
+                    required: {
+                      value: true,
+                      message: 'Email is required'
+                    },
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: 'Invalid email address'
+                    }
+                  })}
+                />
+                {errors.email && (
+                  <div className="text-danger fst-italic">{errors.email}</div>
+                )}
               </div>
-            </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className={
+                    'form-control' + (errors.password ? ' is-invalid' : '')
+                  }
+                  id="password"
+                  placeholder="··············"
+                  name="password"
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'Password is required'
+                    }
+                  })}
+                />
+                {errors.password && (
+                  <div className="text-danger fst-italic">
+                    {errors.password}
+                  </div>
+                )}
+              </div>
+              <div className="d-grid gap-2">
+                <button type="submit" className="btn btn-primary d-grid gap-2">
+                  Continue
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

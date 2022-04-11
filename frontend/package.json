@@ -19,7 +19,7 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",
-    "vds-ui": "git+https://github.com/Victin09/vira-design-system.git"
+    "vira-design-system": "git+https://github.com/Victin09/vira-design-system.git"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",

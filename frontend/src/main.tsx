@@ -2,14 +2,11 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
-import 'vds-ui/dist/css/vds.min.css'
-import VdsUi from 'vds-ui/dist/js/vds.min.js'
-import Icons from 'vds-ui/dist/js/vds-icons.min.js'
+import 'vira-design-system/dist/css/vira-design-system.css'
+import 'vira-design-system/dist/js/vira-design-system.js'
 
 import './index.css'
 import App from './app'
-
-VdsUi.use(Icons)
 
 ReactDOM.render(
   <StrictMode>

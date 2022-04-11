@@ -14,130 +14,107 @@ const Register = () => {
   }
 
   return (
-    <div className="vds-height-1-1 vds-flex vds-flex-middle vds-flex-center">
-      <div
-        className="vds-section vds-section-muted vds-width-1-1 vds-flex vds-flex-middle vds-animation-fade"
-        data-vds-height-viewport
-      >
+    <div className="row h-100 align-items-center justify-content-center">
+      <div className="col-sm-12 col-md-4">
         <div className="vds-container">
-          <div
-            className="vds-grid-margin vds-grid vds-grid-stack"
-            data-vds-grid
-          >
-            <div className="vds-width-1-1@m">
-              <div className="vds-margin vds-width-large vds-margin-auto vds-card vds-card-default vds-card-body vds-border-rounded vds-box-shadow-small">
-                <h3 className="vds-card-title vds-text-center">vira.TOLLER</h3>
-                <form
-                  noValidate
-                  onSubmit={handleSubmit(sendForm)}
-                  className="vds-margin-medium-top"
-                >
-                  <div className="vds-margin">
-                    <div className="vds-inline vds-width-1-1">
-                      <span
-                        className="vds-form-icon"
-                        vds-icon="icon: mail"
-                      ></span>
-                      <input
-                        className={
-                          'vds-input vds-form-control vds-border-rounded' +
-                          (errors.email ? ' vds-form-danger' : '')
-                        }
-                        type="text"
-                        name="email"
-                        placeholder="Email address"
-                        {...register('email', {
-                          required: {
-                            value: true,
-                            message: 'Email is required'
-                          },
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: 'Invalid email address'
-                          }
-                        })}
-                      />
+          <div className="card shadow p-3">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-2">Sign Up</h2>
+              <form noValidate onSubmit={handleSubmit(sendForm)}>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email address
+                  </label>
+                  <input
+                    className={
+                      'form-control' + (errors.email ? ' is-invalid' : '')
+                    }
+                    id="email"
+                    type="text"
+                    name="email"
+                    placeholder="Email address"
+                    {...register('email', {
+                      required: {
+                        value: true,
+                        message: 'Email is required'
+                      },
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                        message: 'Invalid email address'
+                      }
+                    })}
+                  />
+                  {errors.email && (
+                    <div className="invalid-feedback fst-italic">
+                      {errors.email}
                     </div>
-                    {errors.email && (
-                      <div className="vds-text-danger vds-text-italic">
-                        {errors.email}
-                      </div>
-                    )}
-                  </div>
-                  <div className="vds-margin">
-                    <div className="vds-inline vds-width-1-1">
-                      <span
-                        className="vds-form-icon"
-                        vds-icon="icon: user"
-                      ></span>
-                      <input
-                        className={
-                          'vds-input vds-form-control vds-border-rounded' +
-                          (errors.fullname ? ' vds-form-danger' : '')
-                        }
-                        type="text"
-                        name="fullname"
-                        placeholder="First and last name"
-                        {...register('fullname', {
-                          required: {
-                            value: true,
-                            message: 'Full name is required'
-                          }
-                        })}
-                      />
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Fullname
+                  </label>
+                  <input
+                    className={
+                      'form-control' + (errors.fullname ? ' is-invalid' : '')
+                    }
+                    type="text"
+                    name="fullname"
+                    placeholder="First and last name"
+                    {...register('fullname', {
+                      required: {
+                        value: true,
+                        message: 'Fullname is required'
+                      }
+                    })}
+                  />
+                  {errors.fullname && (
+                    <div className="invalid-feedback fst-italic">
+                      {errors.fullname}
                     </div>
-                    {errors.fullname && (
-                      <div className="vds-text-danger vds-text-italic">
-                        {errors.fullname}
-                      </div>
-                    )}
-                  </div>
-                  <div className="vds-margin">
-                    <div className="vds-inline vds-width-1-1">
-                      <span
-                        className="vds-form-icon"
-                        vds-icon="icon: lock"
-                      ></span>
-                      <input
-                        className={
-                          'vds-input vds-form-control vds-border-rounded' +
-                          (errors.password ? ' vds-form-danger' : '')
-                        }
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        {...register('password', {
-                          required: {
-                            value: true,
-                            message: 'Password is required'
-                          },
-                          minLength: {
-                            value: 8,
-                            message: 'Password must be at least 8 characters'
-                          }
-                        })}
-                      />
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    className={
+                      'form-control' + (errors.password ? ' is-invalid' : '')
+                    }
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    {...register('password', {
+                      required: {
+                        value: true,
+                        message: 'Password is required'
+                      },
+                      minLength: {
+                        value: 8,
+                        message: 'Password must be at least 8 characters'
+                      }
+                    })}
+                  />
+                  {errors.password && (
+                    <div className="invalid-feedback fst-italic">
+                      {errors.password}
                     </div>
-                    {errors.password && (
-                      <div className="vds-text-danger vds-text-italic">
-                        {errors.password}
-                      </div>
-                    )}
-                  </div>
-                  <div className="vds-margin">
-                    <button
-                      type="submit"
-                      className="vds-button vds-button-primary vds-width-1-1 vds-border-rounded"
-                    >
-                      Register
-                    </button>
-                  </div>
-                  <div className="vds-text-small vds-text-center">
-                    Already have an account? Sign in{' '}
-                    <Link to="/signin">here</Link>
-                  </div>
-                </form>
-              </div>
+                  )}
+                </div>
+                <div className="d-grid gap-2">
+                  <button
+                    type="submit"
+                    className="btn btn-primary d-grid gap-2"
+                  >
+                    Continue
+                  </button>
+                </div>
+                <div className="mt-2 text-secondary">
+                  Already have an account? Sign in{' '}
+                  <Link to="/signin">here</Link>
+                </div>
+              </form>
             </div>
           </div>
         </div>
