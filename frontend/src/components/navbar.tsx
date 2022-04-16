@@ -6,82 +6,91 @@ export const Navbar = () => {
   const { getUser } = useAuth()
 
   return (
-    <div
-      data-vds-sticky="media: 960"
-      className="vds-navbar-container vds-sticky"
-    >
-      <nav className="vds-navbar-container" data-vds-navbar>
-        <div className="vds-navbar-left">
-          <a className="vds-navbar-item vds-logo" href="#">
-            vira.TOLLER
-          </a>
-          <ul className="vds-navbar-nav vds-visible@m">
-            <li>
-              <a href="#">Workspaces</a>
-              <div
-                className="vds-navbar-dropdown"
-                data-vds-dropdown="mode: click; offset: 0"
+    <nav className="navbar sticky-top navbar-expand-lg bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">
+          vira.Toller
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-vds-toggle="collapse"
+          data-vds-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav">
+            {/* Workspaces */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-vds-toggle="dropdown"
+                aria-expanded="false"
               >
-                <ul className="vds-nav vds-navbar-dropdown-nav">
-                  <li className="vds-active">
-                    <Link to={`/workspaces/${getUser()!._id}`}>
-                      View Workspaces
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/workspaces/new">Create workspace</Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <a href="#">Boards</a>
-              <div
-                className="vds-navbar-dropdown"
-                data-vds-dropdown="mode: click; offset: 0"
+                Espacios de trabajo
+              </a>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
               >
-                <ul className="vds-nav vds-navbar-dropdown-nav">
-                  <li className="vds-active">
-                    <Link to={`/boards/${getUser()!._id}`}>View Boards</Link>
-                  </li>
-                  <li>
-                    <Link to="/boards/new">Create board</Link>
-                  </li>
-                </ul>
-              </div>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Ver espacios de trabajo
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href="#"
+                    data-vds-toggle="modal"
+                    data-vds-target="#createWorkspaceModal"
+                  >
+                    Crear espacio de trabajo
+                  </a>
+                </li>
+              </ul>
             </li>
-          </ul>
-        </div>
 
-        <div className="vds-navbar-right">
-          <a
-            data-vds-navbar-toggle-icon=""
-            href="#offcanvas"
-            data-vds-toggle=""
-            className="vds-navbar-toggle vds-hidden@m vds-icon vds-navbar-toggle-icon"
-            aria-expanded="false"
-          ></a>
-          <ul className="vds-navbar-nav vds-visible@m">
-            <li>
-              <a href="#">{getUser()!.fullname}</a>
-              <div
-                className="vds-navbar-dropdown vds-border-rounded vds-box-shadow-small"
-                data-vds-dropdown="mode: click; offset: 0"
-                style={{ top: '0px !important' }}
+            {/* Boards */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-vds-toggle="dropdown"
+                aria-expanded="false"
               >
-                <ul className="vds-nav vds-navbar-dropdown-nav">
-                  <li>
-                    <Link to="#">View profile</Link>
-                  </li>
-                  <li>
-                    <Link to="/logout">Logout</Link>
-                  </li>
-                </ul>
-              </div>
+                Tableros
+              </a>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a className="dropdown-item">Ver tableros</a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Crear tablero
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
+
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">{getUser()!.fullname.toUpperCase()}</li>
+          </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   )
 }

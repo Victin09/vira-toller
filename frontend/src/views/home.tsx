@@ -1,9 +1,8 @@
-/* eslint-disable multiline-ternary */
 import { useEffect } from 'react'
 import { useAuth } from '../common/providers/auth.provider'
 import { useFetch } from '../common/hooks/use-fetch'
 import { Home as HomeModel } from '../models/home.model'
-import { CreateWorkspaceModal } from '../components/worspaces/create-modal'
+import { CreateWorkspaceModal } from '../components/worspaces/create-workspace'
 
 const Home = () => {
   const { getUser } = useAuth()
@@ -27,45 +26,72 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="vds-flex">
-      {data && data.length > 0 ? (
-        <ul data-vds-accordion="multiple: true">
-          {data.map((home) => (
-            <li key={home.workspace.name}>
-              <a className="vds-accordion-title" href="#">
-                {home.workspace.name}
-              </a>
-              <div className="vds-accordion-content">
-                {home.boards.length ? (
-                  home.boards.map((board) => (
-                    <div
-                      className="vds-card vds-card-default vds-card-body vds-border-rounded vds-width-1-2@m"
-                      key={board.name}
-                    >
-                      <h3 className="vds-card-title">{board.name}</h3>
-                      <p>{board.descriptions}</p>
-                    </div>
-                  ))
-                ) : (
-                  <span>
-                    Este espacio de trabajo no tiene tableros, pulsa{' '}
-                    <a data-vds-toggle="target: #modal">aquí</a> para crear uno
-                  </span>
-                )}
+    <div>
+      {data && data.length > 0 && (
+        <div className="mt-2">
+          <h4>Bienvenido {getUser()!.fullname}</h4>
+          {data.map((home: HomeModel) => (
+            <div
+              className="accordion accordion-flush"
+              id="accordionExample"
+              key={home.workspace.id}
+            >
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="headingOne">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-vds-toggle="collapse"
+                    data-vds-target={`#${home.workspace.name.replace(
+                      / /g,
+                      ''
+                    )}`}
+                    aria-expanded="true"
+                    aria-controls={home.workspace.name}
+                  >
+                    {home.workspace.name}
+                  </button>
+                </h2>
+                <div
+                  id={home.workspace.name.replace(/ /g, '')}
+                  className="accordion-collapse collapse show"
+                  aria-labelledby="headingOne"
+                  // data-vds-parent="#accordionExample"
+                >
+                  <div className="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> It
+                    is shown by default, until the collapse plugin adds the
+                    appropriate classes that we use to style each element. These
+                    classes control the overall appearance, as well as the
+                    showing and hiding via CSS transitions. You can modify any
+                    of this with custom CSS or overriding our default variables.
+                    It's also worth noting that just about any HTML can go
+                    within the <code>.accordion-body</code>, though the
+                    transition does limit overflow.
+                  </div>
+                </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
-      ) : (
-        <>
-          <div>
-            No se han encontrado espacios de trabajo, pulsa{' '}
-            <a data-vds-toggle="target: #modal">aquí</a> para crear uno
-          </div>
-
-          <CreateWorkspaceModal />
-        </>
+        </div>
       )}
+      {!data ||
+        (data.length === 0 && (
+          <div className="mt-2">
+            <h4>Bienvenido {getUser()!.fullname}</h4>
+            <span>
+              No existe ningún espacio de trabajo, para crear uno pulsa{' '}
+              <a
+                href="#"
+                data-vds-toggle="modal"
+                data-vds-target="#createWorkspaceModal"
+              >
+                aquí
+              </a>
+            </span>
+          </div>
+        ))}
+      <CreateWorkspaceModal />
     </div>
   )
 }
